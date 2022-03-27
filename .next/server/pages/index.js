@@ -5,7 +5,7 @@ exports.id = 405;
 exports.ids = [405];
 exports.modules = {
 
-/***/ 470:
+/***/ 908:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -26,6 +26,9 @@ var next_image = __webpack_require__(675);
 ;// CONCATENATED MODULE: external "fs/promises"
 const promises_namespaceObject = require("fs/promises");
 var promises_default = /*#__PURE__*/__webpack_require__.n(promises_namespaceObject);
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 // EXTERNAL MODULE: ./node_modules/next/link.js
 var next_link = __webpack_require__(664);
 ;// CONCATENATED MODULE: ./components/Breadcrumb.js
@@ -108,12 +111,21 @@ function Breadcrumb({ path  }) {
     });
 };
 
+;// CONCATENATED MODULE: external "next/router"
+const router_namespaceObject = require("next/router");
 ;// CONCATENATED MODULE: ./components/File.js
 
 
-function File({ name  }) {
+
+function File({ name , parent  }) {
+    const router = (0,router_namespaceObject.useRouter)();
+    const handleNavigate = (path)=>{
+        router.push(`/?folder=${path}`);
+    };
     return /*#__PURE__*/ jsx_runtime_.jsx(jsx_runtime_.Fragment, {
         children: /*#__PURE__*/ (0,jsx_runtime_.jsxs)("div", {
+            onClick: ()=>handleNavigate(parent + "/" + name)
+            ,
             className: " bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700",
             children: [
                 /*#__PURE__*/ jsx_runtime_.jsx(next_image["default"], {
@@ -135,8 +147,6 @@ function File({ name  }) {
     });
 };
 
-;// CONCATENATED MODULE: external "next/router"
-const router_namespaceObject = require("next/router");
 ;// CONCATENATED MODULE: ./components/Folder.js
 
 
@@ -171,6 +181,8 @@ function Folder({ name , parent  }) {
     });
 };
 
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(689);
 ;// CONCATENATED MODULE: ./pages/index.js
 
 
@@ -181,13 +193,28 @@ function Folder({ name , parent  }) {
 
 
 
-function Home({ data , path  }) {
+
+
+const hljs = __webpack_require__(755);
+
+function Home({ data , path , fileContent  }) {
+    console.log({
+        fileContent
+    });
+    (0,external_react_.useEffect)(()=>{
+        // first, find all the div.code blocks
+        document.querySelectorAll('div.code').forEach((el)=>{
+            // then highlight each
+            hljs.highlightElement(el);
+            console.log(el);
+        });
+    }, []);
     return /*#__PURE__*/ (0,jsx_runtime_.jsxs)(jsx_runtime_.Fragment, {
         children: [
             /*#__PURE__*/ jsx_runtime_.jsx(Breadcrumb, {
                 path: path
             }),
-            /*#__PURE__*/ jsx_runtime_.jsx("div", {
+            data ? /*#__PURE__*/ jsx_runtime_.jsx("div", {
                 className: "grid grid-cols-6 gap-4",
                 children: data.map((d)=>{
                     if (d.isFile === true) {
@@ -206,6 +233,11 @@ function Home({ data , path  }) {
                         }, d.name);
                     }
                 })
+            }) : /*#__PURE__*/ jsx_runtime_.jsx("pre", {
+                children: /*#__PURE__*/ jsx_runtime_.jsx("code", {
+                    className: "code",
+                    children: fileContent
+                })
             })
         ]
     });
@@ -216,23 +248,43 @@ async function getServerSideProps(context) {
     console.log({
         folder
     });
-    let data = await promises_default().readdir(folder, {
-        withFileTypes: true
-    });
-    data = data.map((d)=>{
-        return {
-            name: d.name,
-            isFile: d.isFile()
-        };
-    });
+    let data = false;
+    let fileContent = false;
+    var stats = external_fs_default().statSync(folder);
+    if (stats.isDirectory()) {
+        data = await promises_default().readdir(folder, {
+            withFileTypes: true
+        });
+        data = data.map((d)=>{
+            return {
+                name: d.name,
+                isFile: d.isFile()
+            };
+        });
+    } else {
+        try {
+            const data = external_fs_default().readFileSync(folder, 'utf8');
+            fileContent = data;
+        } catch (err) {
+            console.error(err);
+        }
+    }
     return {
         props: {
             data,
-            path: folder
+            path: folder,
+            fileContent
         }
     };
 }
 
+
+/***/ }),
+
+/***/ 755:
+/***/ ((module) => {
+
+module.exports = require("highlight.js");
 
 /***/ }),
 
@@ -383,7 +435,7 @@ module.exports = require("react/jsx-runtime");
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [895,61], () => (__webpack_exec__(470)));
+var __webpack_exports__ = __webpack_require__.X(0, [895,61], () => (__webpack_exec__(908)));
 module.exports = __webpack_exports__;
 
 })();
