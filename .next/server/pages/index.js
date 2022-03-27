@@ -198,15 +198,11 @@ var external_react_ = __webpack_require__(689);
 const hljs = __webpack_require__(755);
 
 function Home({ data , path , fileContent  }) {
-    console.log({
-        fileContent
-    });
     (0,external_react_.useEffect)(()=>{
         // first, find all the div.code blocks
         document.querySelectorAll('div.code').forEach((el)=>{
             // then highlight each
             hljs.highlightElement(el);
-            console.log(el);
         });
     }, []);
     return /*#__PURE__*/ (0,jsx_runtime_.jsxs)(jsx_runtime_.Fragment, {
@@ -245,9 +241,6 @@ function Home({ data , path , fileContent  }) {
 async function getServerSideProps(context) {
     let { folder ='/'  } = context.query;
     folder = folder === "" ? '/' : folder;
-    console.log({
-        folder
-    });
     let data = false;
     let fileContent = false;
     var stats = external_fs_default().statSync(folder);
