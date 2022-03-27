@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css'
 import fsPromises from 'fs/promises'
 import fs from 'fs';
 import Breadcrumb from '../components/Breadcrumb'
+import Menu from '../components/Menu'
 import File from '../components/File'
 import Folder from '../components/Folder'
 import Link from 'next/link'
@@ -11,18 +12,19 @@ import {useEffect} from 'react'
 const hljs = require('highlight.js');
 import 'highlight.js/styles/github.css';
 
-export default function Home({data,path,fileContent}) {
+export default function Home({data,path,fileContent,stats}) {
 
   useEffect(()=>{
     // first, find all the div.code blocks
-document.querySelectorAll('div.code').forEach(el => {
-  // then highlight each
-  hljs.highlightElement(el);
-});
+  document.querySelectorAll('div.code').forEach(el => {
+    // then highlight each
+    hljs.highlightElement(el);
+  });
   },[])
   return (
     <>
     <Breadcrumb path={path}/>
+    <Menu path={path} isFile={!data} stats={stats}/>
     {data?<div className="grid grid-cols-6 gap-4">
  
     {data.map(d=>{
@@ -70,6 +72,7 @@ else{
       data, 
       path:folder,
       fileContent,
+      stats:JSON.parse(JSON.stringify(stats))
     }, // will be passed to the page component as props } }
 }
 }
