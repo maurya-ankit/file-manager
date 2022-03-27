@@ -166,7 +166,6 @@ const external_axios_namespaceObject = require("axios");
 var external_axios_default = /*#__PURE__*/__webpack_require__.n(external_axios_namespaceObject);
 ;// CONCATENATED MODULE: external "next/script"
 const script_namespaceObject = require("next/script");
-var script_default = /*#__PURE__*/__webpack_require__.n(script_namespaceObject);
 ;// CONCATENATED MODULE: ./components/Menu.js
 
 
@@ -189,7 +188,8 @@ const Menu_ = ({ path , isFile , stats , fileContent , handleSave  })=>{
                     href: "https://unpkg.com/flowbite@1.4.1/dist/flowbite.min.css"
                 })
             }),
-            /*#__PURE__*/ jsx_runtime_.jsx((script_default()), {
+            /*#__PURE__*/ jsx_runtime_.jsx("script", {
+                async: true,
                 src: "https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"
             }),
             /*#__PURE__*/ jsx_runtime_.jsx(react_menu_namespaceObject.ControlledMenu, {
