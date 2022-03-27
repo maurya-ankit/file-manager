@@ -10,27 +10,18 @@ const handler = nc({
   },
 })
   .post(async (req, res) => {
-    const { filePath } = req.query;
+    const { dir } = req.query;
     try {
-      fs.closeSync(fs.openSync(filePath, "w"));
-    } catch (err) {
-      throw new Error(err);
-    }
-  })
-  .patch(async (req, res) => {
-    const { filePath } = req.query;
-    let body = req.body;
-    try {
-      fs.writeFileSync(filePath, body.fileContent);
+      fs.mkdirSync(dir);
     } catch (err) {
       throw new Error(err);
     }
   })
   .delete(async (req, res) => {
-    const { filePath } = req.query;
+    const { dir } = req.query;
     try {
-      fs.unlinkSync(filePath);
-      res.json({ message: `${filePath} deleted successfully` });
+      fs.rmdirSync(dir, { recursive: true });
+      res.json({ message: `${dir} deleted successfully` });
     } catch (err) {
       throw new Error(err);
     }
