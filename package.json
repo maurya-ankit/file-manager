@@ -1,6 +1,6 @@
 {
   "name": "@maurya-ankit/file-manager",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
